@@ -74,7 +74,8 @@ code {
    no cat to toggle, hide its nav button too. */
 @media (hover: none), (pointer: coarse) {
   #oneko,
-  .cat-toggle {
+  .cat-toggle,
+  .oneko-hint {
     display: none !important;
   }
 }
