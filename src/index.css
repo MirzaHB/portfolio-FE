@@ -22,7 +22,17 @@ body {
   line-height: 1.6;
   color: #333;
   overflow-x: hidden;
-  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  /* Film grain over soft washes of the brand colours (pinned to the
+     viewport; iOS Safari scrolls them instead, which still looks fine),
+     over the base gradient. The grain is noise with its alpha on a steep
+     curve so it reads as specks rather than grey haze; its rect opacity is
+     the strength. */
+  background:
+    url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='200'%20height='200'%3E%3Cfilter%20id='n'%20x='0'%20y='0'%3E%3CfeTurbulence%20type='fractalNoise'%20baseFrequency='0.8'%20numOctaves='2'%20stitchTiles='stitch'/%3E%3CfeColorMatrix%20values='0%200%200%200%200%200%200%200%200%200%200%200%200%200%200%204%200%200%200%20-1.9'/%3E%3C/filter%3E%3Crect%20width='100%25'%20height='100%25'%20filter='url%28%23n%29'%20opacity='0.1'/%3E%3C/svg%3E") 0 0 / 200px 200px,
+    radial-gradient(55vw 45vh at 8% 5%, rgba(102, 126, 234, 0.28), transparent 70%) fixed,
+    radial-gradient(45vw 50vh at 95% 35%, rgba(118, 75, 162, 0.2), transparent 70%) fixed,
+    radial-gradient(55vw 45vh at 25% 100%, rgba(56, 189, 248, 0.16), transparent 70%) fixed,
+    linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
   min-height: 100vh;
 }
 

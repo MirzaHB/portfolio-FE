@@ -1,6 +1,7 @@
 import React from 'react';
 import Navigation from './Navigation';
 import MusicPlayer from '../MusicPlayer';
+import ClickPush from './ClickPush';
 import './Layout.css';
 
 interface LayoutProps {
@@ -15,6 +16,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
         {children}
       </main>
       <MusicPlayer />
+      <ClickPush />
     </div>
   );
 };

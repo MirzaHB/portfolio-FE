@@ -151,6 +151,7 @@ const ScrollNavigation: React.FC = () => {
             key={item.id}
             className={`nav-item ${activeSection === item.id ? 'active' : ''}`}
             onClick={() => scrollToSection(item.id)}
+            data-push={item.id}
             aria-current={activeSection === item.id ? 'true' : undefined}
           >
             <div

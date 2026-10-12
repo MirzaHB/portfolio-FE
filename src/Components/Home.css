@@ -857,3 +857,110 @@
     gap: 1.5rem;
   }
 }
+
+/* ------------------------------------------------------------------------
+   Scroll reveals
+
+   Pure CSS scroll-driven animations: progress is tied to scroll position,
+   not time, so scrolling back up plays them in reverse. Browsers without
+   animation-timeline (Firefox, older Safari) skip this whole block and get
+   the static page, as do visitors who prefer reduced motion.
+
+   These animate the individual translate/scale properties rather than
+   transform. The cards' hover lift is a transform, and the two compose;
+   animating transform here would pin it and kill the hover.
+   ------------------------------------------------------------------------ */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    @keyframes reveal-up {
+      from {
+        opacity: 0;
+        translate: 0 48px;
+        scale: 0.96;
+      }
+    }
+
+    @keyframes reveal-side {
+      from {
+        opacity: 0;
+        translate: var(--reveal-x) 0;
+      }
+    }
+
+    @keyframes line-grow {
+      from { scale: 1 0; }
+    }
+
+    @keyframes line-grow-x {
+      from { scale: 0 1; }
+    }
+
+    @keyframes dot-light {
+      from {
+        opacity: 0.35;
+        scale: 0.5;
+        filter: grayscale(1);
+      }
+      60% {
+        scale: 1.25;
+        box-shadow: 0 0 0 10px rgba(102, 126, 234, 0.35);
+      }
+    }
+
+    .section-header h2,
+    .about-card,
+    .featured-projects .project-card,
+    .connect-section {
+      animation: reveal-up linear both;
+      animation-timeline: view();
+      animation-range: entry 0% cover 30%;
+    }
+
+    .section-line {
+      animation: line-grow-x linear both;
+      animation-timeline: view();
+      animation-range: entry 0% cover 35%;
+    }
+
+    /* The timeline line grows from the top, its tip held at 60% down the
+       viewport: it starts when the timeline's top crosses that mark and
+       finishes when its bottom does. Each dot sits on the line, so it
+       lights up as the tip reaches it. */
+    .timeline {
+      view-timeline: --experience-timeline block;
+    }
+
+    .timeline::before {
+      transform-origin: top;
+      animation: line-grow linear both;
+      animation-timeline: --experience-timeline;
+      animation-range: cover 40vh cover calc(100% - 60vh);
+    }
+
+    .timeline-dot {
+      animation: dot-light linear both;
+      animation-timeline: view();
+      animation-range: cover 40vh cover calc(40vh + 60px);
+    }
+
+    /* Cards slide in from their own side of the line. */
+    .timeline-content {
+      --reveal-x: -60px;
+      animation: reveal-side linear both;
+      animation-timeline: view();
+      animation-range: entry 0% cover 30%;
+    }
+
+    .timeline-item:nth-child(even) .timeline-content {
+      --reveal-x: 60px;
+    }
+
+    /* Below 768px every card sits right of a left-hand line. */
+    @media (max-width: 768px) {
+      .timeline-content,
+      .timeline-item:nth-child(even) .timeline-content {
+        --reveal-x: 40px;
+      }
+    }
+  }
+}

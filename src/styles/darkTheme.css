@@ -16,7 +16,13 @@
 }
 
 .dark-theme body {
-  background: linear-gradient(135deg, #1a202c 0%, #2d3748 100%);
+  /* Same layers as the light body in index.css, with light grain specks. */
+  background:
+    url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20width='200'%20height='200'%3E%3Cfilter%20id='n'%20x='0'%20y='0'%3E%3CfeTurbulence%20type='fractalNoise'%20baseFrequency='0.8'%20numOctaves='2'%20stitchTiles='stitch'/%3E%3CfeColorMatrix%20values='0%200%200%200%201%200%200%200%200%201%200%200%200%200%201%204%200%200%200%20-1.9'/%3E%3C/filter%3E%3Crect%20width='100%25'%20height='100%25'%20filter='url%28%23n%29'%20opacity='0.09'/%3E%3C/svg%3E") 0 0 / 200px 200px,
+    radial-gradient(55vw 45vh at 8% 5%, rgba(102, 126, 234, 0.22), transparent 70%) fixed,
+    radial-gradient(45vw 50vh at 95% 35%, rgba(139, 92, 246, 0.16), transparent 70%) fixed,
+    radial-gradient(55vw 45vh at 25% 100%, rgba(56, 189, 248, 0.1), transparent 70%) fixed,
+    linear-gradient(135deg, #1a202c 0%, #2d3748 100%);
   color: var(--text-primary);
   transition: background 0.3s ease, color 0.3s ease;
 }

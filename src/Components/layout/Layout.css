@@ -10,7 +10,11 @@
   width: 100%;
   position: relative;
   box-sizing: border-box;
-  overflow-x: hidden; /* Prevent horizontal scroll */
+  /* Prevent horizontal scroll. clip rather than hidden: hidden makes this a
+     scroll container (overflow-y computes to auto), and scroll-driven
+     animations would then track this box, which never scrolls, instead of
+     the page. */
+  overflow-x: clip;
 }
 
 /* Add some breathing room around content */

@@ -1,0 +1,41 @@
+.click-push {
+  position: fixed;
+  z-index: 2147483646; /* above everything but the cat's hint */
+  translate: -50% -100%;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.75rem;
+  font-weight: 600;
+  white-space: nowrap;
+  color: #5a67d8;
+  pointer-events: none;
+  animation: click-push-rise 0.85s cubic-bezier(0.2, 0.7, 0.3, 1) forwards;
+}
+
+.dark-theme .click-push {
+  color: #a5b4fc;
+}
+
+@keyframes click-push-rise {
+  0% {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  15% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-28px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .click-push {
+    animation-name: click-push-fade;
+  }
+
+  @keyframes click-push-fade {
+    15% { opacity: 1; }
+    100% { opacity: 0; }
+  }
+}
