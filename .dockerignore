@@ -1,0 +1,10 @@
+/docs
+/.github
+README.md
+DEPLOYMENT.md
+node_modules
+dist
+.git
+.env
+.env.*
+!.env.example
