@@ -1,9 +1,11 @@
 /docs
 /.github
+/tests
 README.md
 DEPLOYMENT.md
 node_modules
 dist
+build
 .git
 .env
 .env.*
