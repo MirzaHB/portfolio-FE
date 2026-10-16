@@ -8,6 +8,7 @@ on:
 
 env:
   REGISTRY_GH: ghcr.io
+  IMAGE: ghcr.io/mirzahb/portfolio-fe
 
 jobs:
   build-and-push:
@@ -33,5 +34,5 @@ jobs:
             VITE_MSAL_TENANT_ID=${{ secrets.VITE_MSAL_TENANT_ID }}
             VITE_MSAL_REDIRECT_URI=${{ secrets.VITE_MSAL_REDIRECT_URI }}
           tags: |
-            ${{ env.REGISTRY_GH }}/${{ github.repository_owner }}/portfolio-fe:latest
-            ${{ env.REGISTRY_GH }}/${{ github.repository_owner }}/portfolio-fe:${{ github.sha }}
+            ${{ env.IMAGE }}:latest
+            ${{ env.IMAGE }}:${{ github.sha }}
