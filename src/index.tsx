@@ -6,8 +6,14 @@ import './index.css';
 import App from './App';
 import { msalConfig } from './auth/auth-config';
 
+// MSAL needs the Web Crypto API, which browsers only expose in a secure
+// context (HTTPS or localhost). On plain HTTP, e.g. http://<server-ip>:<port>,
+// render the site without sign-in instead of failing to load at all.
+const canUseMsal =
+  typeof window !== 'undefined' && window.isSecureContext && !!window.crypto?.subtle;
+
 // Create MSAL instance
-const msalInstance = new PublicClientApplication(msalConfig);
+const msalInstance = canUseMsal ? new PublicClientApplication(msalConfig) : null;
 
 // Signing out clears the local session, then leaves for Microsoft's sign-out
 // page. Coming back with the Back button restores this page from the
@@ -15,7 +21,7 @@ const msalInstance = new PublicClientApplication(msalConfig);
 // every later sign-in fails with interaction_in_progress. MSAL clears that flag
 // on startup, so start up again.
 let signOutStarted = false;
-msalInstance.addEventCallback((event) => {
+msalInstance?.addEventCallback((event) => {
   if (event.eventType === EventType.LOGOUT_START) signOutStarted = true;
 });
 window.addEventListener('pageshow', (event) => {
@@ -28,25 +34,34 @@ const renderApp = () => {
   );
   root.render(
     <React.StrictMode>
-      <MsalProvider instance={msalInstance}>
+      {msalInstance ? (
+        <MsalProvider instance={msalInstance}>
+          <App />
+        </MsalProvider>
+      ) : (
         <App />
-      </MsalProvider>
+      )}
     </React.StrictMode>
   );
 };
 
-// Initialize MSAL, process any redirect response, then render.
-// Must render AFTER handleRedirectPromise resolves so the account
-// is set before React components first mount.
-msalInstance.initialize().then(() => {
-  return msalInstance.handleRedirectPromise();
-}).then((response) => {
-  if (response?.account) {
-    msalInstance.setActiveAccount(response.account);
-  }
+if (!msalInstance) {
+  console.warn('Sign-in is disabled: this page is not served over HTTPS.');
   renderApp();
-}).catch((error) => {
-  console.error('❌ MSAL initialization or redirect handling failed:', error);
-  // Render anyway so the user isn't stuck on a blank page
-  renderApp();
-});
+} else {
+  // Initialize MSAL, process any redirect response, then render.
+  // Must render AFTER handleRedirectPromise resolves so the account
+  // is set before React components first mount.
+  msalInstance.initialize().then(() => {
+    return msalInstance.handleRedirectPromise();
+  }).then((response) => {
+    if (response?.account) {
+      msalInstance.setActiveAccount(response.account);
+    }
+    renderApp();
+  }).catch((error) => {
+    console.error('❌ MSAL initialization or redirect handling failed:', error);
+    // Render anyway so the user isn't stuck on a blank page
+    renderApp();
+  });
+}
